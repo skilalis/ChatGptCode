@@ -1,0 +1,38 @@
+Here's an example of a web app that uses JavaScript and the Tesseract.js library to convert an image to text:
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@v2.0.0-beta.7/dist/tesseract.min.js"></script>
+  </head>
+  <body>
+    <input type="file" id="inputImage" onchange="previewImage(event)">
+    <br><br>
+    <img id="preview">
+    <br><br>
+    <textarea id="outputText" rows="10" cols="30"></textarea>
+    <br><br>
+    <button id="submitButton" onclick="runOCR()">Submit</button>
+
+    <script>
+      function previewImage(event) {
+        var input = event.target;
+        var reader = new FileReader();
+        reader.onload = function () {
+          var dataURL = reader.result;
+          var output = document.getElementById("preview");
+          output.src = dataURL;
+        };
+        reader.readAsDataURL(input.files[0]);
+      }
+
+      function runOCR() {
+        Tesseract.recognize(document.getElementById("preview"))
+          .then(function (result) {
+            document.getElementById("outputText").value = result.text;
+          });
+      }
+    </script>
+  </body>
+</html>
+
+In this example, the user selects an image using the file input element. The preview of the selected image is displayed using an img element. The OCR process is triggered when the user clicks the "Submit" button, which calls the runOCR function. This function uses the Tesseract.recognize method from the Tesseract.js library to extract text from the selected image. The extracted text is then displayed in a textarea element.
