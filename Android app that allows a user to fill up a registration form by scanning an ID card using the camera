@@ -1,0 +1,82 @@
+Here's an example of an Android app that allows a user to fill up a registration form by scanning an ID card using the camera and Optical Character Recognition (OCR) technology:
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.provider.MediaStore;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.ml.vision.FirebaseVision;
+import com.google.firebase.ml.vision.common.FirebaseVisionImage;
+import com.google.firebase.ml.vision.text.FirebaseVisionText;
+import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
+
+public class MainActivity extends AppCompatActivity {
+
+    private Button mButton;
+    private ImageView mImageView;
+    private EditText mNameEditText;
+    private EditText mIdEditText;
+    private EditText mAddressEditText;
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        mButton = findViewById(R.id.button);
+        mImageView = findViewById(R.id.imageView);
+        mNameEditText = findViewById(R.id.nameEditText);
+        mIdEditText = findViewById(R.id.idEditText);
+        mAddressEditText = findViewById(R.id.addressEditText);
+
+        mButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dispatchTakePictureIntent();
+            }
+        });
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            mImageView.setImageBitmap(imageBitmap);
+
+            FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(imageBitmap);
+            FirebaseVisionTextRecognizer textRecognizer = FirebaseVision.getInstance().getOnDeviceTextRecognizer();
+            Task<FirebaseVisionText> task = textRecognizer.processImage(image);
+            task.addOnSuccessListener(new OnSuccessListener
+            
+            {
+    @Override
+    public void onSuccess(FirebaseVisionText firebaseVisionText) {
+        String text = firebaseVisionText.getText();
+        // Process the extracted text to fill up the registration form
+        // ...
+        // Example code to extract name, ID, and address from the extracted text:
+        String name = extractName(text);
+        mNameEditText.setText(name);
+        String id = extractId(text);
+        mIdEditText.setText(id);
+        String address = extractAddress(text);
+        mAddressEditText.setText(address);
+    }
+});
+Here, the method extractName, extractId, and extractAddress are hypothetical methods that would extract the respective information from the extracted text. You would need to write these methods yourself, taking into consideration the format and layout of the ID card. You may use string manipulation techniques, regular expressions, or any other method to extract the required information.
