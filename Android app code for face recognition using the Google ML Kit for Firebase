@@ -1,0 +1,191 @@
+Here is an example of an Android app code for face recognition using the Google ML Kit for Firebase:
+import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.widget.Toast;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.ml.vision.FirebaseVision;
+import com.google.firebase.ml.vision.common.FirebaseVisionImage;
+import com.google.firebase.ml.vision.face.FirebaseVisionFace;
+import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetector;
+import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetectorOptions;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity {
+
+  private Bitmap yourSelectedImage;
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+
+    detectFaces();
+  }
+
+  private void detectFaces() {
+    FirebaseVisionFaceDetectorOptions options =
+        new FirebaseVisionFaceDetectorOptions.Builder()
+            .setPerformanceMode(FirebaseVisionFaceDetectorOptions.ACCURATE)
+            .setLandmarkMode(FirebaseVisionFaceDetectorOptions.ALL_LANDMARKS)
+            .setClassificationMode(FirebaseVisionFaceDetectorOptions.ALL_CLASSIFICATIONS)
+            .build();
+
+    FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(yourSelectedImage);
+
+    FirebaseVisionFaceDetector detector = FirebaseVision.getInstance().getVisionFaceDetector(options);
+    detector.detectInImage(image)
+        .addOnSuccessListener(
+            new OnSuccessListener<List<FirebaseVisionFace>>() {
+              @Override
+              public void onSuccess(List<FirebaseVisionFace> faces) {
+                // Task completed successfully
+                // ...
+              }
+            })
+        .addOnFailureListener(
+            new OnFailureListener() {
+              @Override
+              public void onFailure(@NonNull Exception e) {
+                // Task failed with an exception
+                // ...
+                Toast.makeText(MainActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+              }
+            });
+  }
+}
+In this code, the detectFaces method is used to detect faces in an image using the Firebase ML Kit. The FirebaseVisionFaceDetectorOptions are used to set the options for the face detector, such as the performance mode, landmark mode, and classification mode. The FirebaseVisionImage is created from the selected image, and the FirebaseVisionFaceDetector is used to detect faces in the image. The results are returned as a list of FirebaseVisionFace objects, which you can use to access information about the faces detected in the image.
+In this code, the detectFaces method is used to detect faces in an image using the Firebase ML Kit. The FirebaseVisionFaceDetectorOptions are used to set the options for the face detector, such as the performance mode, landmark mode, and classification mode. The FirebaseVisionImage is created from the selected image, and the FirebaseVisionFaceDetector is used to detect faces in the image. The results are returned as a list of FirebaseVisionFace objects, which you can use to access information about the faces detected in the image.
+Here is an example of an Android app code for face recognition sign up using the Google ML Kit for Firebase:
+
+import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.widget.Toast;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.ml.vision.FirebaseVision;
+import com.google.firebase.ml.vision.common.FirebaseVisionImage;
+import com.google.firebase.ml.vision.face.FirebaseVisionFace;
+import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetector;
+import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetectorOptions;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity {
+
+  private Bitmap yourSelectedImage;
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+  }
+
+  public void signUp(View view) {
+    detectFaces();
+  }
+
+  private void detectFaces() {
+    FirebaseVisionFaceDetectorOptions options =
+        new FirebaseVisionFaceDetectorOptions.Builder()
+            .setPerformanceMode(FirebaseVisionFaceDetectorOptions.ACCURATE)
+            .setLandmarkMode(FirebaseVisionFaceDetectorOptions.ALL_LANDMARKS)
+            .setClassificationMode(FirebaseVisionFaceDetectorOptions.ALL_CLASSIFICATIONS)
+            .build();
+
+    FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(yourSelectedImage);
+
+    FirebaseVisionFaceDetector detector = FirebaseVision.getInstance().getVisionFaceDetector(options);
+    detector.detectInImage(image)
+        .addOnSuccessListener(
+            new OnSuccessListener<List<FirebaseVisionFace>>() {
+              @Override
+              public void onSuccess(List<FirebaseVisionFace> faces) {
+                if (faces.size() == 1) {
+                  // Sign up succeeded
+                  // ...
+                } else {
+                  // Sign up failed, as more than one face was detected
+                  // ...
+                  Toast.makeText(MainActivity.this, "Error: more than one face was detected", Toast.LENGTH_SHORT).show();
+                }
+              }
+            })
+        .addOnFailureListener(
+            new OnFailureListener() {
+              @Override
+              public void onFailure(@NonNull Exception e) {
+                // Sign up failed with an exception
+                // ...
+                Toast.makeText(MainActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+              }
+            });
+  }
+}
+
+In this code, a signUp method is added to the MainActivity class. When the user taps a sign up button in the app, the signUp method is called, which in turn calls the detectFaces method to detect faces in an image. The results are returned as a list of FirebaseVisionFace objects, and if there is exactly one face detected, the sign up process is considered
+
+Here is an example of an Android app code for face recognition sign in using the Google ML Kit for Firebase:
+import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.widget.Toast;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.ml.vision.FirebaseVision;
+import com.google.firebase.ml.vision.common.FirebaseVisionImage;
+import com.google.firebase.ml.vision.face.FirebaseVisionFace;
+import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetector;
+import com.google.firebase.ml.vision.face.FirebaseVisionFaceDetectorOptions;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity {
+
+  private Bitmap yourSelectedImage;
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+  }
+
+  public void signIn(View view) {
+    detectFaces();
+  }
+
+  private void detectFaces() {
+    FirebaseVisionFaceDetectorOptions options =
+        new FirebaseVisionFaceDetectorOptions.Builder()
+            .setPerformanceMode(FirebaseVisionFaceDetectorOptions.ACCURATE)
+            .setLandmarkMode(FirebaseVisionFaceDetectorOptions.ALL_LANDMARKS)
+            .setClassificationMode(FirebaseVisionFaceDetectorOptions.ALL_CLASSIFICATIONS)
+            .build();
+
+    FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(yourSelectedImage);
+
+    FirebaseVisionFaceDetector detector = FirebaseVision.getInstance().getVisionFaceDetector(options);
+    detector.detectInImage(image)
+        .addOnSuccessListener(
+            new OnSuccessListener<List<FirebaseVisionFace>>() {
+              @Override
+              public void onSuccess(List<FirebaseVisionFace> faces) {
+                if (faces.size() == 1) {
+                  // Sign in succeeded
+                  // ...
+                } else {
+                  // Sign in failed, as more or less than one face was detected
+                  // ...
+                  Toast.makeText(MainActivity.this, "Error: more or less than one face was detected", Toast.LENGTH_SHORT).show();
+                }
+              }
+            })
+        .addOnFailureListener(
+            new OnFailureListener() {
+              @Override
+              public void onFailure(@NonNull Exception e) {
+                // Sign in failed with an exception
+                // ...
+                Toast.makeText(MainActivity.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+              }
+            });
+  }
+}
+In this code, a signIn method is added to the MainActivity class. When the user taps a sign in button in the app, the signIn method is called, which in turn calls the detectFaces method to detect faces in an image. The results are returned as a list of FirebaseVisionFace objects, and if there is exactly one face detected, the sign
