@@ -1,0 +1,52 @@
+Here's an example of a simple JavaScript code for an image to text translation app:
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Image to Text Translation App</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.4.0/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.1.1/dist/coco-ssd.js"></script>
+</head>
+<body>
+  <h1>Image to Text Translation App</h1>
+  <div>
+    <input type="file" id="input-image" accept="image/*">
+  </div>
+  <div id="text-output"></div>
+
+  <script>
+    // Load the coco-ssd model
+    cocoSsd.load().then((model) => {
+      // Get the input image
+      const inputImage = document.getElementById("input-image");
+
+      // When the image is selected, run the model on it
+      inputImage.addEventListener("change", async (event) => {
+        // Get the selected image
+        const image = event.target.files[0];
+
+        // Create an image element with the selected image
+        const imageElement = new Image();
+        imageElement.src = URL.createObjectURL(image);
+
+        // Get the predictions from the model
+        const predictions = await model.detect(imageElement);
+
+        // Get the text from the predictions
+        let text = "";
+        for (let i = 0; i < predictions.length; i++) {
+          text += predictions[i].class + " ";
+        }
+
+        // Display the text
+        document.getElementById("text-output").innerText = text;
+      });
+    });
+  </script>
+</body>
+</html>
+
+In this code, we use the TensorFlow.js and coco-ssd libraries to load the model and perform object detection on an image selected by the user. The text output of the predictions is displayed on the page.
+
+Note: This code is just an example and may not work correctly out of the box, as it requires a specific type of model (coco-ssd) to be loaded. There are many other models and libraries available for image to text translation, so you may need to modify this code to fit your specific use case.
+
